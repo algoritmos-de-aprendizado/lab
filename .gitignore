@@ -1,4 +1,5 @@
 venv
+.venv
 .ipynb_checkpoints
 .idea
 output
