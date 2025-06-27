@@ -46,6 +46,11 @@ gradient-descent-the-ultimate-optimizer = "^1.0"
 som-pbc = "^1.0.2"
 liac-arff = "^2.5.0"
 jax = {extras = ["cpu"], version = "^0.4.28"}
+nltk = "^3.9.1"
+spacy = "^3.8.7"
+sentence-transformers = "^4.1.0"
+ipykernel = "^6.29.5"
+jupyter = "^1.1.1"
 
 [[tool.poetry.source]]
 name = "torchcpu1130"
@@ -55,6 +60,10 @@ priority = "explicit"
 [[tool.poetry.source]]
 name = "PyPI"
 priority = "primary"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "Cython>=0.29.27", "setuptools>=60.8.1", "numpy>=1.23.3", "scipy>=1.10.1"]
