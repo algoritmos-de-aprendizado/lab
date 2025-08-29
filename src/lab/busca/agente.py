@@ -16,7 +16,7 @@ class Agente:
         self.t.penup()
         self.desenha()
 
-    def move(self, direcao):
+    def move(self, direcao, simulado=False):
         self.linha += self.moves[direcao][0]
         self.coluna += self.moves[direcao][1]
         if self.linha < 1:
@@ -27,7 +27,8 @@ class Agente:
             self.linha = self.grade.nlinhas
         if self.coluna > self.grade.ncolunas:
             self.coluna = self.grade.ncolunas
-        self.desenha()
+        if not simulado:
+            self.desenha()
 
     def desenha(self):
         self.t.penup()
