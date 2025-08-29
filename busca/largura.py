@@ -10,9 +10,15 @@ rnd = np.random.default_rng(1650)
 grade = Grade()
 agente = Agente(grade, linha=-19, coluna=-19)
 alvo = Alvo(grade, *sorteia_coords(grade, rnd))
-
+direcoes_possiveis = ["norte", "sul", "leste", "oeste"]
+visitados = set()
 while agente != alvo:
-    direcao = sorteia_de_lista(["norte", "sul", "leste", "oeste"], rnd)
-    agente.move(direcao)
+    for direcao in direcoes_possiveis:
+        posicao_candidata = agente.move(direcao, simulado=True)
+        if posicao_candidata not in visitados:
+            agente.move(direcao)
+            visitados.add(agente.posicao)
+        # fim do IF
+    # fim do FOR
 
 turtle.done()
