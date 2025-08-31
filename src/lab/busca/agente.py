@@ -2,38 +2,37 @@ import turtle
 
 
 class Agente:
-    def __init__(self, grade, linha, coluna, cor="blue", forma="turtle", vel=2):
-        self.moves = {"norte": (0, 1),
-                      "sul": (0, -1),
-                      "oeste": (1, 0),
-                      "leste": (-1, 0)}
+    def __init__(self, grade, linha, coluna, cor="black", forma="turtle"):
+        self.direcoes_possiveis = {"norte": (1, 0), "sul": (-1, 0), "oeste": (0, 1), "leste": (0, -1)}
         self.grade = grade
         self.linha = linha
         self.coluna = coluna
-        self.t = turtle.Turtle(shape=forma)
-        self.t.color(cor)
-        self.t.speed(vel)
-        self.t.penup()
-        self.desenha()
+        self.turtle = turtle.Turtle(shape=forma)
+        self.turtle.color(cor)
+        self.turtle.penup()
 
-    def move(self, direcao, simulado=False):
-        self.linha += self.moves[direcao][0]
-        self.coluna += self.moves[direcao][1]
-        if self.linha < 1:
-            self.linha = 1
-        if self.coluna < 1:
-            self.coluna = 1
-        if self.linha > self.grade.nlinhas:
-            self.linha = self.grade.nlinhas
-        if self.coluna > self.grade.ncolunas:
-            self.coluna = self.grade.ncolunas
-        if not simulado:
-            self.desenha()
+    def move(self, linha, coluna):
+        self.linha = linha
+        self.coluna = coluna
+        x, y = self.grade(self.linha, self.coluna)
+        self.turtle.goto(x, y)
 
-    def desenha(self):
-        self.t.penup()
-        self.t.goto(*self.grade(self.linha, self.coluna))
-        self.t.pendown()
+    @property
+    def posicao(self):
+        return self.linha, self.coluna
+
+    @property
+    def sucessores(self):
+        lst = []
+        for _, (l, c) in self.direcoes_possiveis.items():
+            linha = self.linha + l
+            coluna = self.coluna + c
+            if 1 <= linha <= self.grade.nlinhas and 1 <= coluna <= self.grade.ncolunas:
+                lst.append((linha, coluna))
+        return lst
+
+    def __repr__(self):
+        return f"Agente({self.linha}, {self.coluna})"
 
     def __eq__(self, other):
-        return self.linha == other.linha and self.coluna == other.coluna
+        return (self.linha, self.coluna) == (other.linha, other.coluna)

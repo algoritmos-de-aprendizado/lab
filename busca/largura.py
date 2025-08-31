@@ -1,24 +1,35 @@
 import turtle
+from collections import deque
+
 import numpy as np
 
-from src.lab.busca import sorteia_de_lista, sorteia_coords
+from src.lab.busca import sorteia_coords
 from src.lab.busca.agente import Agente
 from src.lab.busca.alvo import Alvo
 from src.lab.busca.grade import Grade
 
-rnd = np.random.default_rng(1650)
-grade = Grade()
-agente = Agente(grade, linha=-19, coluna=-19)
+rnd = np.random.default_rng(23)
+grade = Grade(fps=5)
+agente = Agente(grade, 8, 8)
 alvo = Alvo(grade, *sorteia_coords(grade, rnd))
-direcoes_possiveis = ["norte", "sul", "leste", "oeste"]
 visitados = set()
-while agente != alvo:
-    for direcao in direcoes_possiveis:
-        posicao_candidata = agente.move(direcao, simulado=True)
-        if posicao_candidata not in visitados:
-            agente.move(direcao)
-            visitados.add(agente.posicao)
-        # fim do IF
-    # fim do FOR
+fronteira = deque([agente.posicao])
+"""
+Dicas:
+???????? = fronteira.pop()       ← Retira da lista o elemento mais à direita.
+fronteira.appendleft(??????????) ← Insere elemento à esquerda da fila.
+"""
+while agente != alvo and ?????????:
+    proximo = ???????????
+    agente.move(*?????????????)
+    grade.pinta(*?????????????, cor = "blue")
+    ????????????
+    for ????????? in agente.sucessores:
+        if ????????????? and ?????????????:
+            grade.pinta(*???????????, cor = "lightgreen")
+            ?????????????
+            grade.desenha()
 
-turtle.done()
+        grade.pinta(*agente.posicao, cor="green" if agente == alvo else "black")
+        grade.desenha()
+        turtle.done()
