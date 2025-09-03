@@ -14,22 +14,17 @@ agente = Agente(grade, 8, 8)
 alvo = Alvo(grade, *sorteia_coords(grade, rnd))
 visitados = set()
 fronteira = deque([agente.posicao])
-"""
-Dicas:
-???????? = fronteira.pop()       ← Retira da lista o elemento mais à direita.
-fronteira.appendleft(??????????) ← Insere elemento à esquerda da fila.
-"""
-while agente != alvo and ?????????:
-    proximo = ???????????
-    agente.move(*?????????????)
-    grade.pinta(*?????????????, cor = "blue")
-    ????????????
-    for ????????? in agente.sucessores:
-        if ????????????? and ?????????????:
-            grade.pinta(*???????????, cor = "lightgreen")
-            ?????????????
-            grade.desenha()
+while agente != alvo and fronteira:
+    proximo = fronteira.pop()  # Retira da lista o elemento mais à direita.
+    agente.move(*proximo)
+    grade.pinta(*proximo, cor="blue")
+    visitados.add(proximo)
+    for sucessor in agente.sucessores:
+        if sucessor not in visitados and sucessor not in fronteira:
+            grade.pinta(*sucessor, cor="lightgreen")
+            fronteira.appendleft(sucessor)  # Insere elemento à esquerda da fila.
+    grade.desenha()
 
-        grade.pinta(*agente.posicao, cor="green" if agente == alvo else "black")
-        grade.desenha()
-        turtle.done()
+grade.pinta(*agente.posicao, cor="green" if agente == alvo else "black")
+grade.desenha()
+turtle.done()
