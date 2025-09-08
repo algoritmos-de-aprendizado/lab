@@ -26,8 +26,6 @@ dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 class Autoencoder(nn.Module):
     """
     A simple autoencoder model with an encoder and decoder.
-    >>> a = Autoencoder()
-    >>> print(a)
     """
     def __init__(self):
         super(Autoencoder, self).__init__()
