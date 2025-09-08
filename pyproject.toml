@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "algoritmos-de-aprendizado-lab"
+name = "lab"
 version = "0.250814.0"
 description = "Prática em algoritmos de busca e aprendizado"
 authors = ["davips <davip@utfpr.edu.br>"]

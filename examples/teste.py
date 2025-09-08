@@ -7,7 +7,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 
-from src.lab.dataset import mnist
+from lab.dataset import mnist
 
 # Load MNIST data
 X, y = mnist(1000)
@@ -26,8 +26,6 @@ dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 class Autoencoder(nn.Module):
     """
     A simple autoencoder model with an encoder and decoder.
-    >>> a = Autoencoder()
-    >>> print(a)
     """
     def __init__(self):
         super(Autoencoder, self).__init__()
