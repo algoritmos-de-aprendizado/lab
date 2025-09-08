@@ -7,7 +7,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 
-from src.lab.dataset import mnist
+from lab.dataset import mnist
 
 # Load MNIST data
 X, y = mnist(1000)

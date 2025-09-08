@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from torch.utils.data import DataLoader, TensorDataset
 
-from src.lab.dataset import mnist
+from lab.dataset import mnist
 
 X, y = mnist(1800)
 scaler = StandardScaler()

@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.lab.busca.alvo import Alvo
+from lab.busca.alvo import Alvo
 
 
 def sorteia_de_lista(lst, rnd):

@@ -3,10 +3,10 @@ from collections import deque
 
 import numpy as np
 
-from src.lab.busca import sorteia_coords
-from src.lab.busca.agente import Agente
-from src.lab.busca.alvo import Alvo
-from src.lab.busca.grade import Grade
+from lab.busca import sorteia_coords
+from lab.busca.agente import Agente
+from lab.busca.alvo import Alvo
+from lab.busca.grade import Grade
 
 rnd = np.random.default_rng(23)
 grade = Grade(fps=5)
