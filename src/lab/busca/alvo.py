@@ -6,8 +6,9 @@ class Alvo:
         self.linha = linha
         self.coluna = coluna
         self.grade = grade
+        self.posicao = linha, coluna
         self.cor = cor
-        self.grade.alvo=self
+        self.grade.alvo = self
         t = turtle.Turtle()
         t.hideturtle()
         t.speed(0)
