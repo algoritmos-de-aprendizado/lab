@@ -1,8 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.datasets import load_iris, make_moons
-from sklearn.linear_model import Perceptron
 from sklearn.preprocessing import StandardScaler
+
+from lab.perceptron import Perceptron, tangente_hiperbolica
 
 
 def plot_decision_boundary(X, y, model, title):
@@ -11,7 +12,7 @@ def plot_decision_boundary(X, y, model, title):
     xx, yy = np.meshgrid(np.linspace(x_min, x_max, 200),
                          np.linspace(y_min, y_max, 200))
     grid = np.c_[xx.ravel(), yy.ravel()]
-    Z = model.predict(grid)
+    Z = model.predizer(grid)
     Z = Z.reshape(xx.shape)
 
     plt.contourf(xx, yy, Z, alpha=0.3, cmap="coolwarm")
@@ -19,38 +20,20 @@ def plot_decision_boundary(X, y, model, title):
     plt.title(title)
     plt.show()
 
+# Dua luas
+# X_nonlin, y_nonlin = make_moons(n_samples=300, noise=0.2, random_state=0)
 
 # Iris
 iris = load_iris()
 X = iris.data[:, :2]
 y = iris.target
 mask = y < 2
-X_lin = X[mask]
-y_lin = y[mask]
+X_ = X[mask]
+y_ = y[mask]
 
 scaler_lin = StandardScaler()
-X_lin = scaler_lin.fit_transform(X_lin)
+X_ = scaler_lin.fit_transform(X_)
 
-model_lin = Perceptron()
-model_lin.fit(X_lin, y_lin)
-plot_decision_boundary(X_lin, y_lin, model_lin, "Problema Linearmente Separável (Iris)")
-
-# Moons
-X_nonlin, y_nonlin = make_moons(n_samples=300, noise=0.2, random_state=0)
-
-scaler_nonlin = StandardScaler()
-X_nonlin = scaler_nonlin.fit_transform(X_nonlin)
-
-model_lin = Perceptron(alpha=0.001)
-model_lin.fit(X_nonlin, y_nonlin)
-plot_decision_boundary(X_nonlin, y_nonlin, model_lin, "Problema Não Linearmente Separável (Moons)")
-
-# XOR
-rnd = np.random.default_rng(0)
-n_points = 100
-X_xor = rnd.integers(0, 2, (n_points, 2))
-y_xor = np.logical_xor(X_xor[:, 0], X_xor[:, 1]).astype(int)
-model_lin = Perceptron()
-model_lin.fit(X_xor, y_xor)
-plot_decision_boundary(X_xor, y_xor, model_lin, "Problema XOR")
-
+modelo = Perceptron(dimensionalidade=2, af=tangente_hiperbolica)
+modelo.aprender(X_, y_)
+plot_decision_boundary(X_, y_, modelo, "Problema Linearmente Separável (Iris)")
