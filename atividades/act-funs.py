@@ -31,13 +31,22 @@ def plot_decision_boundary(X, y, model, title):
 # Load MNIST and reduce to 2D with PCA
 X, y = mnist(1800)
 # Binary classification: 0 vs not 0
-y_bin = (y == 0).astype(np.float32)
+b = y == 0
+X0 = X[b, :]
+y0 = y[b]
+
+b = y == 1
+X1 = X[b, :]
+y1 = y[b]
+
+X = np.vstack((X0, X1))
+y = np.vstack((y0.reshape(-1, 1), y1.reshape(-1, 1)))
 pca = PCA(n_components=2)
 X_pca = pca.fit_transform(X)
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X_pca)
 
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y_bin, test_size=0.2, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=0)
 X_train, y_train = torch.FloatTensor(X_train), torch.FloatTensor(y_train).unsqueeze(1)
 X_test, y_test = torch.FloatTensor(X_test), torch.FloatTensor(y_test).unsqueeze(1)
 
@@ -49,8 +58,9 @@ class Classifier(nn.Module):
     def __init__(self):
         super(Classifier, self).__init__()
         self.net = nn.Sequential(
-            nn.Linear(2, 3), nn.Tanh(),
-            nn.Linear(3, 1), nn.Sigmoid()
+            nn.Linear(2, 20), nn.Tanh(),
+            nn.Linear(20, 30), nn.Tanh(),
+            nn.Linear(30, 1), nn.Sigmoid()
         )
 
     def forward(self, x):
@@ -58,13 +68,12 @@ class Classifier(nn.Module):
 
 
 model = Classifier()
-criterion = nn.BCELoss()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+criterion = nn.MSELoss()
+optimizer = optim.Adam(model.parameters(), lr=0.005)
 
-num_epochs = 10
+num_epochs = 1000
 for epoch in range(num_epochs):
     for i, (data, target) in enumerate(train_loader):
-        print(epoch, i)
         outputs = model(data)
         loss = criterion(outputs, target)
         optimizer.zero_grad()
