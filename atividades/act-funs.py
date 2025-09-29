@@ -47,8 +47,8 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X_pca)
 
 X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=0)
-X_train, y_train = torch.FloatTensor(X_train), torch.FloatTensor(y_train).unsqueeze(1)
-X_test, y_test = torch.FloatTensor(X_test), torch.FloatTensor(y_test).unsqueeze(1)
+X_train, y_train = torch.FloatTensor(X_train), torch.FloatTensor(y_train).view(-1, 1)
+X_test, y_test = torch.FloatTensor(X_test), torch.FloatTensor(y_test).view(-1, 1)
 
 train_ds = TensorDataset(X_train, y_train)
 train_loader = DataLoader(train_ds, batch_size=32, shuffle=True)
@@ -58,9 +58,8 @@ class Classifier(nn.Module):
     def __init__(self):
         super(Classifier, self).__init__()
         self.net = nn.Sequential(
-            nn.Linear(2, 20), nn.Tanh(),
-            nn.Linear(20, 30), nn.Tanh(),
-            nn.Linear(30, 1), nn.Sigmoid()
+            nn.Linear(2, 100), nn.Tanh(),
+            nn.Linear(100, 1), nn.Sigmoid()
         )
 
     def forward(self, x):
@@ -69,9 +68,9 @@ class Classifier(nn.Module):
 
 model = Classifier()
 criterion = nn.MSELoss()
-optimizer = optim.Adam(model.parameters(), lr=0.005)
+optimizer = optim.Adam(model.parameters(), lr=0.1)
 
-num_epochs = 1000
+num_epochs = 100
 for epoch in range(num_epochs):
     for i, (data, target) in enumerate(train_loader):
         outputs = model(data)
