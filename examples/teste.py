@@ -55,48 +55,48 @@ model = Autoencoder()
 criterion = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-# Training loop
-num_epochs = 64
-for epoch in range(num_epochs):
-    for data, target in dataloader:
-        # Forward pass
-        encoded, decoded = model(data)
-        loss = criterion(decoded, target)
+# # Training loop
+# num_epochs = 64
+# for epoch in range(num_epochs):
+#     for data, target in dataloader:
+#         # Forward pass
+#         encoded, decoded = model(data)
+#         loss = criterion(decoded, target)
+#
+#         # Backward pass and optimize
+#         optimizer.zero_grad()
+#         loss.backward()
+#         optimizer.step()
+#
+#     if (epoch + 1) % 10 == 0:
+#         print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}')
+#
+# # Get the 2D encodings for visualization
+# with torch.no_grad():
+#     encoded_imgs, _ = model(X_tensor)
+#     embeddings = encoded_imgs.numpy()
 
-        # Backward pass and optimize
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-
-    if (epoch + 1) % 10 == 0:
-        print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}')
-
-# Get the 2D encodings for visualization
-with torch.no_grad():
-    encoded_imgs, _ = model(X_tensor)
-    embeddings = encoded_imgs.numpy()
-
-plt.figure(figsize=(10, 8))
-plt.scatter(embeddings[:, 0], embeddings[:, 1], c=y, cmap='tab10', alpha=0.6)
-plt.colorbar(label='Digit Class')
-plt.title('Autoencoder 2D Embedding of MNIST Sample')
-plt.show()
+# plt.figure(figsize=(10, 8))
+# plt.scatter(embeddings[:, 0], embeddings[:, 1], c=y, cmap='tab10', alpha=0.6)
+# plt.colorbar(label='Digit Class')
+# plt.title('Autoencoder 2D Embedding of MNIST Sample')
+# plt.show()
 
 # Plot the results
 pca = PCA()
 embeddings = pca.fit_transform(X_scaled)
 # Plot the results
 plt.figure(figsize=(10, 8))
-plt.scatter(embeddings[:, 0], embeddings[:, 1], c=y, cmap='tab10', alpha=0.6)
+plt.scatter(embeddings[:, -2], embeddings[:, -1], c=y, cmap='tab10', alpha=0.6)
 plt.colorbar(label='Digit Class')
 plt.title('PCA 2D Embedding of MNIST Sample')
 plt.show()
 
-tsne = TSNE()
-embeddings = tsne.fit_transform(X_scaled)
-# Plot the results
-plt.figure(figsize=(10, 8))
-plt.scatter(embeddings[:, 0], embeddings[:, 1], c=y, cmap='tab10', alpha=0.6)
-plt.colorbar(label='Digit Class')
-plt.title('TSNE 2D Embedding of MNIST Sample')
-plt.show()
+# tsne = TSNE()
+# embeddings = tsne.fit_transform(X_scaled)
+# # Plot the results
+# plt.figure(figsize=(10, 8))
+# plt.scatter(embeddings[:, 0], embeddings[:, 1], c=y, cmap='tab10', alpha=0.6)
+# plt.colorbar(label='Digit Class')
+# plt.title('TSNE 2D Embedding of MNIST Sample')
+# plt.show()

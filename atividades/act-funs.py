@@ -65,9 +65,9 @@ class Classifier(nn.Module):
     def forward(self, x):
         return self.net(x)
 
-
+#  act-funs.py
 model = Classifier()
-criterion = nn.MSELoss()
+criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.1)
 
 num_epochs = 100
