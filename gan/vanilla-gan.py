@@ -8,7 +8,7 @@ from lab.dataset import mnist
 from lab.gan.discriminadora import Discriminadora
 from lab.gan.geradora import Geradora
 
-X, y = mnist()
+X, y = mnist(500)
 
 # Filtra para apenas certas classes
 mask = (y == 4) | (y == 7)

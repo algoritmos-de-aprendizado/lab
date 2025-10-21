@@ -40,7 +40,7 @@ def on_key(event):
 
 connect_key_handler(fig, on_key)
 
-for epoch in range(10000):
+for epoch in range(100000):
     for x in data:
         b = x.size(0)
         real = torch.ones(b, 1)
