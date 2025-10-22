@@ -12,7 +12,7 @@ def get_mnist_data(l=14, N=4000, batch_size=100):
     ])
     mnist = datasets.MNIST(root='./data', train=True, download=False, transform=transform)
     # Filtra apenas dígitos 1,2,3
-    idx = (mnist.targets >= 1) & (mnist.targets <= 2)
+    idx = (mnist.targets == 1) | (mnist.targets == 2)
     X_all = torch.stack([mnist[i][0].view(-1) for i in range(len(mnist)) if idx[i]])
     y_all = mnist.targets[idx] - 1  # Remapeia: 1->0, 2->1, 3->2, 4->3
     # Seleciona N amostras

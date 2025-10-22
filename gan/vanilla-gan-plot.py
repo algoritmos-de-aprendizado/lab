@@ -11,30 +11,28 @@ from lab.gan.geradora import Geradora
 
 window_size = 50
 
-# Configuração de seeds para comportamento determinístico
 set_seeds(42)
 
-l = 14
+l = 16
 N = 4000
 batch_size = 200
 X, y, X_teste, y_teste, n_features, data = get_mnist_data(l, N, batch_size)
 G, D = Geradora(n_features), Discriminadora(n_features)
 loss = nn.BCELoss()
-opt_G = optim.Adam(G.parameters(), lr=0.0002)
-opt_D = optim.Adam(D.parameters(), lr=0.0001)
+opt_G = optim.Adam(G.parameters(), lr=0.0004)
+opt_D = optim.Adam(D.parameters(), lr=0.0002)
 
 mlp, acc_teste = train_and_eval_mlp(X, y, X_teste, y_teste, n_features)
 print(f'Acurácia de teste da MLP: {acc_teste:.4f}')
 
 fig, ax_img, ax_loss = init_plot()
-ax_right = ax_loss.twinx()  # Cria apenas uma vez
 losses_D = []
 losses_G = []
 
-paused = [False]  # Mutable for handler
+paused = [False]
 
 def on_key(event):
-    if event.key == ' ':  # Espaço
+    if event.key == ' ':
         paused[0] = not paused[0]
         print('Pausado' if paused[0] else 'Retomado')
 
@@ -47,7 +45,7 @@ for epoch in range(100000):
         fake = torch.zeros(b, 1)
         z = torch.randn(b, 100)
         x_fake = G(z).detach()
-        D_loss = loss(D(x), real) + loss(D(x_fake), fake)
+        D_loss = (loss(D(x), real) + loss(D(x_fake), fake)) / 2
         opt_D.zero_grad()
         D_loss.backward()
         opt_D.step()
@@ -72,7 +70,7 @@ for epoch in range(100000):
     pred_digit = torch.argmax(logits, dim=1).item()
     mlp_digit = str(pred_digit + 1)
     prob_pred = torch.softmax(logits, dim=1)[0, pred_digit].item()
-    update_plot(ax_img, ax_loss, ax_right, sample, l, pred, mlp_digit, prob_pred, losses_D, losses_G, epoch)
+    update_plot(ax_img, ax_loss, sample, l, pred, mlp_digit, prob_pred, losses_D, losses_G, epoch)
     while paused[0]:
         plt.pause(0.1)
 close_plot()

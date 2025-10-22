@@ -16,7 +16,6 @@ X = X[mask]
 y = y[mask]
 
 # Obtém dados
-transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
 data = DataLoader(X, batch_size=10, shuffle=True)
 
 # Prepara G, D e otimizadores

@@ -1,4 +1,4 @@
-def update_plot(ax_img, ax_loss, ax_prob4, sample, l, pred, mlp_digit, prob_pred, losses_D, losses_G, epoch):
+def update_plot(ax_img, ax_loss, sample, l, pred, mlp_digit, prob_pred, losses_D, losses_G, epoch):
     ax_img.clear()
     ax_img.imshow(sample.cpu().numpy().reshape(l, l), cmap='gray')
     ax_img.set_title(f'Predição D: {pred:.3f}\nProb_{mlp_digit}: {prob_pred:.3f}', fontsize=10)
@@ -6,17 +6,11 @@ def update_plot(ax_img, ax_loss, ax_prob4, sample, l, pred, mlp_digit, prob_pred
     ax_img.text(0.5, 0.5, mlp_digit, fontsize=40, ha='center', va='center', color='red', transform=ax_img.transAxes)
     ax_loss.clear()
     ax_loss.plot(losses_D, label='D_loss', color='tab:orange', linewidth=1)
+    ax_loss.plot(losses_G, label='G_loss', color='deepskyblue', linestyle='dotted', linewidth=2)
     ax_loss.set_title('Losses', fontsize=10)
     ax_loss.set_xlabel('Época', fontsize=8)
     ax_loss.set_ylabel('Loss', fontsize=8)
     ax_loss.legend(fontsize=8, loc='upper left')
-    # G_loss agora é exibido no eixo da direita, estilo da antiga prob4
-    ax_prob4.clear()
-    ax_prob4.plot(losses_G, label='G_loss', color='deepskyblue', linestyle='dotted', linewidth=3)
-    ax_prob4.set_ylabel('G_loss', fontsize=8, color='deepskyblue')
-    ax_prob4.tick_params(axis='y', labelcolor='deepskyblue')
-    ax_prob4.set_ylim(0, max(1, max(losses_G) * 1.1))
-    ax_prob4.legend(fontsize=8, loc='upper right')
     ax_img.figure.suptitle(f'Época {epoch + 1}', fontsize=12)
     import matplotlib.pyplot as plt
     plt.pause(0.01)
