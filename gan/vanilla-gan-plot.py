@@ -35,10 +35,15 @@ def on_key(event):
     if event.key == ' ':
         paused[0] = not paused[0]
         print('Pausado' if paused[0] else 'Retomado')
+    elif event.key in ['escape', 'q']:
+        print('Encerrando...')
+        plt.close(fig)
 
 connect_key_handler(fig, on_key)
 
 for epoch in range(100000):
+    if not plt.fignum_exists(fig.number):
+        break
     for x in data:
         b = x.size(0)
         real = torch.ones(b, 1)
@@ -72,5 +77,9 @@ for epoch in range(100000):
     prob_pred = torch.softmax(logits, dim=1)[0, pred_digit].item()
     update_plot(ax_img, ax_loss, sample, l, pred, mlp_digit, prob_pred, losses_D, losses_G, epoch)
     while paused[0]:
+        if not plt.fignum_exists(fig.number):
+            break
         plt.pause(0.1)
+    if not plt.fignum_exists(fig.number):
+        break
 close_plot()
