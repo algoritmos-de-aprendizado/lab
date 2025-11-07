@@ -14,27 +14,6 @@ digits = load_digits()
 X = digits.data.astype(np.float32)
 y = digits.target
 
-# Subsample if needed (digits is small, so keep all)
-# Add moderate label noise (15%)
-noise_frac = 0.15
-n_noisy = int(len(y) * noise_frac)
-if n_noisy > 0:
-    noisy_idx = rng.choice(len(y), size=n_noisy, replace=False)
-    n_classes = len(np.unique(y))
-    shift = rng.choice([-1, 1], size=n_noisy)
-    noisy_labels = (y[noisy_idx] + shift) % n_classes
-    y = y.copy()
-    y[noisy_idx] = noisy_labels
-    print(f'Added label noise: {n_noisy} labels flipped ({noise_frac*100:.0f}%)')
-
-# Add moderate random noise features (200)
-noise_features = 200
-if noise_features > 0:
-    scale = float(X.std()) if X.std() > 0 else 1.0
-    noise_mat = rng.normal(loc=0.0, scale=scale, size=(len(X), noise_features)).astype(np.float32)
-    X = np.hstack([X, noise_mat])
-    print(f'Appended {noise_features} random noise features, new shape: {X.shape}')
-
 Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.3, stratify=y, random_state=0)
 ests = np.arange(1, 100, 1)
 acc_tr = []
