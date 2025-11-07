@@ -5,6 +5,7 @@ Vinhos com qualidade >= 6 são considerados bons (1), os demais ruins (0).
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from sklearn.datasets import fetch_openml
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -32,11 +33,13 @@ print("""\n\n=====================================================
 Questão 1: Espaço de Instâncias e Espaço de Hipóteses
 Defina uma hipótese linear arbitrária e teste em 5 instâncias do conjunto de treinamento.
 -----------------------------------------------------""")
+# Hipótese linear arbitrária: w e b aleatórios
 w = torch.randn(X_train.shape[1])
 b = torch.randn(1).item()
 
 
 def h(x_):
+    """Função de hipótese linear binária"""
     return torch.heaviside(torch.dot(x_, w) + b, torch.tensor([0.0]))
 
 
@@ -47,6 +50,7 @@ print("""\n\n=====================================================
 Questão 2: O problema é linearmente separável?
 Treine um Perceptron e verifique a acurácia.
 -----------------------------------------------------""")
+# Treinamento do Perceptron simples
 w = torch.zeros(X_train.shape[1])
 b = 0.0
 for epoch in range(10):
@@ -121,10 +125,10 @@ class Autoencoder(nn.Module):
         return x_hat, z
 
 
+# Treinamento do autoencoder
 auto = Autoencoder(X_train.shape[1], hidden_dim=3)
 optimizer = torch.optim.Adam(auto.parameters(), lr=0.01)
 loss_fn = nn.MSELoss()
-
 for _ in range(100):
     x_hat, _ = auto(X_train)
     loss = loss_fn(x_hat, X_train)
@@ -135,4 +139,5 @@ for _ in range(100):
 with torch.no_grad():
     _, embeddings = auto(X_test)
     print("Exemplo de embedding das primeiras 5 instâncias (3D):")
-    print(embeddings[:5])
+    for i, emb in enumerate(embeddings[:5]):
+        print(f"Instância {i}: {emb.numpy()}")
